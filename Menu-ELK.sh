@@ -3,7 +3,7 @@
 clear
 printf "\n"
 printf "\n"
-#Teste
+
 Main() {
   #Main menu
    echo -e "\033[0;32m ---------------------------------------------------\033[0m"
@@ -13,17 +13,32 @@ Main() {
    echo -e "\033[0;32m 1. Sincronizar configuração (Shippers) \033[0m"
    echo -e "\033[0;32m 2. Sincronizar configuração (ELK) \033[0m"
    echo -e "\033[0;32m 3. Atualizar versão (Shippers) \033[0m"
-   echo -e "\033[0;32m 4. Atualizar versão (ELK) \033[0m"
+   #echo -e "\033[0;32m 4. Atualizar versão (ELK) \033[0m"
    echo -e "\033[0;32m 5. Verifica processos \033[0m"
+   echo -e "\033[0;32m 5. Editar Configs \033[0m"
    echo -e "\033[0;32m 6. Sair\033[0m"
    printf "\n"
    echo -en "\033[0;32m R: \033[0m";read opcao
 
+   case $opcao in
+      1) Option1 ;;
+      2) Option2 ;;
+      3) Option3 ;;
+      4) Option4 ;;
+      5) bash edit_files.sh ;;
+      6) exit ;;
+      *) echo -e "\033[0;31m Opcão inválida. \033[0m" ; sleep 1; clear; Main
+   esac
+}
+
+GetEst () {
    #Validate main input
    if [ "$opcao" = "6" ]
    then exit
    elif ! [[ $opcao =~ ^[1-6]$ ]]
-   then echo -e "\033[0;31m Opcão inválida. \033[0m" ; sleep 1; clear; Main;
+   then echo -e "\033[0;31m Opcão inválida. \033[0m" ; sleep 1; clear; Main
+   elif [ "$opcao" = "5" ]
+   then clear; printf "\n"; printf "\n"; ./edit_files.sh
    fi
 
    #Get esteira
@@ -39,18 +54,11 @@ Main() {
    if ! [[ $esteira =~ ^(PP|QA1|QA2|QA3)$ ]]
    then echo -e "\033[0;31m Opcão inválida. \033[0m" ; sleep 1; clear; Main;
    fi
-   
-   case $opcao in
-      1) Option1 ;;
-      2) Option2 ;;
-      3) Option3 ;;
-      4) Option4 ;;
-      5) Option5 ;;
-   esac
 }
 
 #Update config shippers
 Option1() {
+  GetEst
   clear
   /usr/bin/ansible-playbook -v -i /etc/ansible/stage/replicacaoELK/inventario/${esteira} /etc/ansible/stage/replicacaoELK/playbooks/playbook_atualizacao_config.yml
   sleep 3
@@ -60,6 +68,7 @@ Option1() {
 
 #Update config L/K
 Option2() {
+  GetEst
   clear
   echo -e "\033[0;31m Em desenvolvimento. \033[0m"
   sleep 1
@@ -68,6 +77,7 @@ Option2() {
 
 #Export new bin (Shippers)
 Option3() {
+  GetEst
   clear
   echo -e "\033[0;31m Em desenvolvimento. \033[0m"
   sleep 1
@@ -76,6 +86,7 @@ Option3() {
 
 #Export new bin (L/K)
 Option4() {
+  GetEst
   clear
   echo -e "\033[0;31m Em desenvolvimento. \033[0m"
   sleep 1
@@ -83,12 +94,13 @@ Option4() {
 }
 
 #Check ps
-Option5() {
-clear
-/usr/bin/ansible-playbook -v -i /etc/ansible/stage/replicacaoELK/inventario/${esteira} /etc/ansible/stage/replicacaoELK/playbooks/playbook_z_pedro.yml
-sleep 3
-clear
-Main
-}
+#Option5() {
+#clear
+#/usr/bin/ansible-playbook -v -i /etc/ansible/stage/replicacaoELK/inventario/${esteira} /etc/ansible/stage/replicacaoELK/playbooks/playbook_z_pedro.yml
+#sleep 3
+#clear
+#Main
+#}
+
 
 Main
