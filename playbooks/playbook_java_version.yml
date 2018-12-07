@@ -1,0 +1,33 @@
+---
+- hosts: ELK_SUITE
+  remote_user: qaadm
+  tasks:
+   - name: Validando Pré Requisitos
+     become: yes
+     become_user: root
+     shell: java -version 2>&1 | awk -F '"' 'NR==1 { print $2 }' | cut -c 1-3
+     register: java_version
+   - debug: var=java_version.stdout
+
+   - name: Versão do Java (necessária release 1.8)
+     command: echo "Validando a versão do Java"
+     when: java_version.stdout | version_compare('1.8', '!=') and
+           ansible_architecture == 'x86_64'
+
+
+     copy:
+       src: /etc/ansible/PoC_Ennio/OHS/conf/httpd-alsb3-soa.conf
+       dest: /opt/web/webtier/Oracle_WT1/instances/config/OHS/ohs1/inc
+       owner: supweb
+       group: web
+       mode: 0644
+       backup: no
+
+
+#   - debug:
+#      var: hostvars[inventory_hostname]
+
+#     assert:
+#       that:
+#         - java_version.stdout_lines | version_compare('1.8', '<>')
+#       msg: "LogStash requer Java 8. Versão atual: {{ java_version.stdout_lines }}"

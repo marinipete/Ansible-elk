@@ -1,0 +1,13 @@
+---
+    - name: Verificando se o processo do {{ app_name_include }} está no ar
+      shell: ps aux | grep -v grep | grep './{{ app_name_include }}' | awk '{print $2}' | wc -l
+      register: process_to_kill
+
+    - name: Parando o processo
+      shell: kill $(ps aux | grep -v grep | grep './{{ app_name_include }}' | awk '{print $2}')
+      when: process_to_kill.stdout != "0"
+
+    - name: Startando processo
+      shell: nohup ./{{ app_name_include }} -e -c {{ app_name_include }}.yml > /dev/null 2>&1 &
+      args:
+        chdir: /home/qaadm/{{ app_name_include }}/
