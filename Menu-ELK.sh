@@ -1,11 +1,10 @@
 #!/bin/bash
 
-clear
-printf "\n"
-printf "\n"
-
+#Main menu
 Main() {
-  #Main menu
+   clear
+   printf "\n"
+   printf "\n"
    echo -e "\033[0;32m ---------------------------------------------------\033[0m"
    echo -e "\033[0;32m Escolha a opção desejada: \033[0m"
    echo -e "\033[0;32m ---------------------------------------------------\033[0m"
@@ -13,12 +12,11 @@ Main() {
    echo -e "\033[0;32m 1. Sincronizar configuração (Shippers) \033[0m"
    echo -e "\033[0;32m 2. Sincronizar configuração (ELK) \033[0m"
    echo -e "\033[0;32m 3. Atualizar versão (Shippers) \033[0m"
-   #echo -e "\033[0;32m 4. Atualizar versão (ELK) \033[0m"
-   echo -e "\033[0;32m 5. Verifica processos \033[0m"
+   echo -e "\033[0;32m 4. Atualizar versão (ELK) \033[0m"
    echo -e "\033[0;32m 5. Editar Configs \033[0m"
    echo -e "\033[0;32m 6. Sair\033[0m"
    printf "\n"
-   echo -en "\033[0;32m R: \033[0m";read opcao
+   echo -en "\033[0;32m R: \033[0m"; read opcao
 
    case $opcao in
       1) Option1 ;;
@@ -31,17 +29,8 @@ Main() {
    esac
 }
 
+#Get esteira
 GetEst () {
-   #Validate main input
-   if [ "$opcao" = "6" ]
-   then exit
-   elif ! [[ $opcao =~ ^[1-6]$ ]]
-   then echo -e "\033[0;31m Opcão inválida. \033[0m" ; sleep 1; clear; Main
-   elif [ "$opcao" = "5" ]
-   then clear; printf "\n"; printf "\n"; ./edit_files.sh
-   fi
-
-   #Get esteira
    printf "\n"
    printf "\n"
    echo -e "\033[0;32m ---------------------------------------------------\033[0m"
@@ -52,7 +41,7 @@ GetEst () {
 
    #Validate esteira
    if ! [[ $esteira =~ ^(PP|QA1|QA2|QA3)$ ]]
-   then echo -e "\033[0;31m Opcão inválida. \033[0m" ; sleep 1; clear; Main;
+   then echo -e "\033[0;31m Opcão inválida. \033[0m" ; sleep 1; clear; GetEst
    fi
 }
 
