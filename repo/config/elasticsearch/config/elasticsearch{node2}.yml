@@ -31,12 +31,12 @@ node.name: node-2
 # Path to directory where to store the data (separate multiple locations by comma):
 #
 #path.data: /path/to/data
-path.data: /opt/web/logs/elasticdata
+path.data: /opt/elk/data/elasticsearch
 #
 # Path to log files:
 #
 #path.logs: /path/to/logs
-path.logs: /opt/web/logs/elasticlogs
+path.logs: /opt/elk/logs/elasticsearch
 #
 # ----------------------------------- Memory -----------------------------------
 #
