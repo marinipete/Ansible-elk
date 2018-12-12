@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #Declare variables
-path_produto=/etc/ansible/stage/replicacaoELK/repo/config
+pat_repo=/etc/ansible/stage/replicacaoELK/config
 
 #Get product
 Main_edit() {
@@ -37,7 +37,7 @@ Main_edit() {
 #Edit Logstash's files
 Opt1 () {
     produto=logstash
-    path_config=${path_produto}/${produto}/config
+    path_config=${pat_repo}/${produto}/config
     clear
     printf "\n"; printf "\n"
     echo -e "\033[0;32m ---------------------------------------------------\033[0m"
@@ -61,7 +61,7 @@ Opt1 () {
         then cp -n ${path_config}/jvm.options ${path_config}/bkp/jvm.options_`date +%d.%m.%Y-%Hh:%Mmin` && vim $    {path_config}/jvm.options && Opt1
         elif [ "$edit_file" = "4" ]
         then cp -n ${path_config}/pipeline-canais.cfg ${path_config}/bkp/pipeline-canais.cfg_`date  +%d.%m.%Y-%Hh:%Mmin` && vim ${path_config}/pipeline-canais.cfg && Opt1
-        elif [ "$edit_file" = "5" ]
+        elif [ "$edit_file" = "5" ] 
         then cp -n ${path_config}/pipeline-packetbeat.cfg ${path_config}/bkp/pipeline-packetbeat.cfg_`date  +%d.%m.%Y-%Hh:%Mmin` && vim ${path_config}/pipeline-packetbeat.cfg && Opt1
         elif [ "$edit_file" = "6" ]
         then Main_edit
@@ -72,21 +72,21 @@ Opt1 () {
 #Edit Kibana's files
 Opt2 () {
     produto=kibana
-    path_config=${path_produto}/${produto}/config
+    path_config=${pat_repo}/${produto}/config
     cp -n ${path_config}/${produto}.yml ${path_config}/bkp/${produto}.yml_`date +%d.%m.%Y-%Hh:%Mmin` && vim    ${path_config}/${produto}.yml && Main_edit
 }
 
 #Edit Packetbeat's files
 Opt3 () {
     produto=packetbeat
-    path_config=${path_produto}/${produto}/config
+    path_config=${pat_repo}/${produto}/config
     cp -n ${path_config}/${produto}.yml ${path_config}/bkp/${produto}.yml_`date +%d.%m.%Y-%Hh:%Mmin` && vim    ${path_config}/${produto}.yml && Main_edit
 }
 
 #Edit Filebeat's files
 Opt4 () {
 #    produto=filebeat
-#    path_config=${path_produto}/${produto}/config
+#    path_config=${pat_repo}/${produto}/config
 #    cp -n ${path_config}/${produto}.yml ${path_config}/bkp/${produto}.yml_`date +%d.%m.%Y-%Hh:%Mmin` && vim    ${path_config}/${produto}.yml && Main_edit
 echo -e "\033[0;31m Em desenvolvimento. \033[0m" ; sleep 1; Main_edit
 }
@@ -94,14 +94,14 @@ echo -e "\033[0;31m Em desenvolvimento. \033[0m" ; sleep 1; Main_edit
 #Edit Metricbeat's files
 Opt5 () {
     produto=metricbeat
-    path_config=${path_produto}/${produto}/config
+    path_config=${pat_repo}/${produto}/config
     cp -n ${path_config}/${produto}.yml ${path_config}/bkp/${produto}.yml_`date +%d.%m.%Y-%Hh:%Mmin` && vim    ${path_config}/${produto}.yml && Main_edit
 }
 
 #Edit Heartbeat's files
 Opt6 () {
     produto=heartbeat
-    path_config=${path_produto}/${produto}/config
+    path_config=${pat_repo}/${produto}/config
     cp -n ${path_config}/${produto}.yml ${path_config}/bkp/${produto}.yml_`date +%d.%m.%Y-%Hh:%Mmin` && vim    ${path_config}/${produto}.yml && Main_edit
 }
 
