@@ -1,0 +1,44 @@
+---
+- hosts: all
+  remote_user: qaadm
+  become: yes
+  become_user: root
+  tasks:
+    - name: Validando a versão do binário presente no servidor local e remoto
+      include: tasks/bin_version.yml app_name_include={{ item }}
+      with_items: "{{ app_name.split('|') }}"
+
+
+
+
+#    - name: Validando a versão do binário instalada no servidor
+#      include: tasks/dest_version.yml app_name_include={{ item }}
+#      with_items: "{{ app_name.split('|') }}"
+
+#    - name: Checksum dos arquivos
+#      include: tasks/checksum.yml local_path={{ return_versions.msg.file_path_local }} dest_path={{ return_versions.msg.files_path_dest }}
+#      with_items: "{{ app_versions.results }}"
+#      when: item.ansible_facts.dest_app_versions == bin_versions.results  | default([])
+
+#   - debug:
+#       msg: "{{ app_files.results | map(attribute='ansible_facts.dest_app_versions') | list }}"
+#     register: return_versions
+
+
+#    - debug:
+#        msg: "{{ app_versions.results | map(attribute='ansible_facts.dest_app_versions.path') | list }}"
+
+#    - name: Bloco de Extração
+#      block:
+#        - name:
+#          include: tasks/extraction.yml app_name_include={{ item.item }}
+#          with_items: app_version_validation.results
+#      when: app_version == "{{ item }}"
+#      with_items: "{{ return_versions.split(',') }}" 
+
+#    - debug:
+#        var: item
+#      when: app_version == item
+#            and app_version | version_compare(item, ne)
+#      with_items: "{{ return_versions.msg }}"
+      

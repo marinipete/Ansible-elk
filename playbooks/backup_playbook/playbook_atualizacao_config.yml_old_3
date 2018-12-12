@@ -1,0 +1,9 @@
+---
+- hosts: all
+  remote_user: qaadm
+  become: yes
+  become_user: root
+  tasks:
+    - name: Validando o arquivo de configuração no servidor de destino
+      include: tasks/update.yml app_name_update={{ item }}
+      with_items: "{{ app_name.split('|') }}"

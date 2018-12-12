@@ -1,0 +1,21 @@
+---
+    - name: Recuperando o caminho dos binários no servidor local
+      find:
+        paths: /etc/ansible/proofOfConcept/Ennio/replicacaoELK/repo/{{ technology }}
+        patterns: '*tar.gz'
+      delegate_to: 127.0.0.1
+      register: bin_filename
+
+    - name: Extraindo o número da versão dos binários
+      set_fact:
+         local_app_versions:
+           app_name_bin: "{{ item['path'] | basename | regex_replace('[-.].*.tar.gz','') }}" 
+           file_path_local: "{{ item['path'] }}"
+      register: bin_versions
+      with_items: "{{ bin_filename.files }}"
+
+    - debug:
+        msg: "{{ bin_versions.results | map(attribute='ansible_facts.local_app_versions') | list }}"
+      register: return_versions
+
+    - debug: var=bin_versions

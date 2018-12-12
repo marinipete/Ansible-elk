@@ -1,5 +1,5 @@
 ---
-- hosts: QA1
+- hosts: all
   remote_user: qaadm
   tasks:
      - name: Criando relacionamento de confiança do usuário root para o qaadm

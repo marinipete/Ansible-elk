@@ -1,0 +1,45 @@
+---
+    - stat:
+        path: "{{ local_path }}"
+        checksum_algorithm: sha1
+      delegate_to: localhost
+#      with_fileglob: /tmp/*.dat
+      register: local_files
+    - stat:
+        path: "{{ dest_path }}"
+        checksum_algorithm: sha1
+      failed_when: remote_files.stat.checksum != item.stat.checksum
+      # failed_when condition checked after every iteration
+      #   and remote_files here is a result of individual task
+      #   but after loop is finished, remote_files is a cobination
+      #   of all iterations results
+      with_items: "{{ local_files.results }}"
+      register: remote_files
+      loop_control:
+        label: "{{ item.stat.path | basename }}"
+
+
+#    - name: Validando o checksum do {{ app_name_include }}.tar.gz no servidor local
+#    #      stat:
+#    #        path: "{{ local_item }}"
+#    #        checksum_algorithm: sha1
+#    #        get_checksum: yes
+#    #      delegate_to: 127.0.0.1
+#    #      with_fileglob: /etc/ansible/proofOfConcept/Ennio/replicacaoELK/repo/{{ technology }}/{{ app_name_include }}*tar.gz
+#    #      register: local_file
+#    #      run_once: True
+#    #      loop_control:
+#    #        loop_var: local_item
+#
+#    #    - name: Validando o checksum do {{ app_name_include }}.tar.gz no servidor remoto e comparando os arquivos
+#    #      stat:
+#    #        path: "/home/qaadm/{{ remote_item.stat.path | basename }}"
+#    #        checksum_algorithm: sha1
+#    #        get_checksum: yes
+#    #      failed_when: remote_file.stat.checksum | default([]) != remote_item.stat.checksum
+#    #      ignore_errors: true
+#    #      with_items: "{{ local_file.results }}"
+#    #      register: remote_file
+#    #      loop_control:
+#    #        loop_var: remote_item
+#

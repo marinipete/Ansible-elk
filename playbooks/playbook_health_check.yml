@@ -1,0 +1,9 @@
+---
+- hosts: all
+  remote_user: qaadm
+  become: yes
+  become_user: root
+  tasks:
+    - name: Verificando o status do processo no servidor de destino
+      include: tasks/health.yml app_name_health={{ item }}
+      with_items: "{{ app_name.split('|') }}"
