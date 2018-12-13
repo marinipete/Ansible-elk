@@ -1,0 +1,17 @@
+---
+    - name: Verificando se o processo do {{ app_name_restart }} está no ar
+      shell: ps aux | grep -v grep | grep './{{ app_name_restart }}' | awk '{print $2}' | wc -l
+      register: process_to_kill
+      changed_when: process_to_kill != "0"
+
+    - name: Parando o processo
+      block:
+         shell: kill $(ps aux | grep -v grep | grep './{{ app_name_restart }}' | awk '{print $2}')
+         pause:
+           seconds: 5
+      when: process_to_kill.stdout != "0"
+
+    - name: Iniciando o processo
+      shell: ./{{ app_name_restart }} &
+      args:
+        chdir: /opt/elk/applications/{{ app_name_restart }}/config

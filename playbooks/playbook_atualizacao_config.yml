@@ -13,4 +13,3 @@
       include: tasks/update-suite.yml app_name_update={{ item }}
       with_items: "{{ app_name.split('|') }}"
       when: technology == "suite"
-
