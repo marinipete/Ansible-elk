@@ -1,7 +1,0 @@
-[FILEBEAT]
-10.129.230.53
-10.129.230.57
-
-[FILEBEAT:vars]
-technology=shipper
-app_name=filebeat

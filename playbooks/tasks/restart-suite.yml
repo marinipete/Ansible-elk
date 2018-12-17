@@ -6,12 +6,14 @@
 
     - name: Parando o processo
       block:
-         shell: kill $(ps aux | grep -v grep | grep './{{ app_name_restart }}' | awk '{print $2}')
-         pause:
-           seconds: 5
+        - shell: kill $(ps aux | grep -v grep | grep '/{{ app_name_restart }}' | awk '{print $2}')
+        - pause:
+            seconds: 5
       when: process_to_kill.stdout != "0"
 
     - name: Iniciando o processo
-      shell: ./{{ app_name_restart }} &
-      args:
-        chdir: /opt/elk/applications/{{ app_name_restart }}/config
+      become: yes
+      become_user: elastic
+      raw: nohup /opt/elk/applications/{{ app_name_restart }}/bin/{{ app_name_restart }} > /dev/null 2>&1 &
+      register: debug
+    - debug: var=debug

@@ -3,6 +3,7 @@
   remote_user: qaadm
   become: yes
   become_user: root
+  gather_facts: false
   tasks:
     - name: Verificando o status do processo no servidor de destino
       include: tasks/health.yml app_name_health={{ item }}

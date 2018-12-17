@@ -3,6 +3,7 @@
   remote_user: qaadm
   become: yes
   become_user: root
+  gather_facts: false
   tasks:
     - name: Validando se o binário existe no servidor remoto
       include: tasks/bin_version.yml app_name_extracao={{ item }}

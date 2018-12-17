@@ -3,11 +3,12 @@
   remote_user: qaadm
   become: yes
   become_user: root
+  gather_facts: false
   tasks:
     - name: Validando o arquivo de configuração no servidor de destino (Shippers)
       include: tasks/update-shippers.yml app_name_update={{ item }}
       with_items: "{{ app_name.split('|') }}"
-      when: technology  == "shipper"
+      when: technology == "shipper"
 
     - name: Validando o arquivo de configuração no servidor de destino (ELK)
       include: tasks/update-suite.yml app_name_update={{ item }}
