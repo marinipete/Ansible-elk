@@ -1,0 +1,16 @@
+---
+- hosts: all
+  remote_user: qaadm
+  become: yes
+  become_user: root
+  gather_facts: false
+  tasks:
+    - name: Validando se o binário existe no servidor remoto (Shippers)
+      include: tasks/bin_version-shipper.yml app_name_extracao={{ item }}
+      with_items: "{{ app_name.split('|') }}"
+      when: technology == "shipper"
+
+    - name: Validando se o binário existe no servidor remoto (ELK)
+      include: tasks/bin_version-suite.yml app_name_extracao={{ item }}
+      with_items: "{{ app_name.split('|') }}"
+      when: technology == "suite"

@@ -1,5 +1,5 @@
 ---
-    - name: Validando o diretório destino /home/qaadm
+    - name: Validando o diretório destino
       file:
         path: /home/qaadm/
         state: directory

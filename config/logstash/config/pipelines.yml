@@ -16,10 +16,10 @@
 #
 
 - pipeline.id: Log-Canais
-  path.config: "/opt/elk/applications/logstash/pipeline-canais.cfg"
+  path.config: "/opt/elk/applications/logstash/config/pipeline-canais.cfg"
   
 - pipeline.id: Log-Canais
-  path.config: "/opt/elk/applications/logstash/pipeline-packetbeat.cfg"
+  path.config: "/opt/elk/applications/logstash/config/pipeline-packetbeat.cfg"
   
 # Available options:
 #

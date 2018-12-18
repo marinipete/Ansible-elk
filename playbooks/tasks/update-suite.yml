@@ -11,4 +11,4 @@
 
     - name: Reiniciando o processo do {{ app_name_update }}
       include: tasks/restart-suite.yml app_name_restart={{ app_name_update }}
-      when: (updated.changed and app_name_update != "logstash") #validar
+      when: updated.changed

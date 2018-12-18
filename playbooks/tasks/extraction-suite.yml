@@ -1,0 +1,38 @@
+---
+    - name: Verificando se o processo do {{ app_name_export }} está no ar
+      shell: ps aux | grep -v grep | grep '/{{ app_name_export }}' | awk '{print $2}' | wc -l
+      register: process_to_kill
+      changed_when: process_to_kill.stdout != "0"
+ 
+    - name: Parando o processo do {{ app_name_export }}
+      shell: kill $(ps aux | grep -v grep | grep '/{{ app_name_export }}' | awk '{print $2}')
+      when: process_to_kill.stdout != "0"
+ 
+    - name: Buscando os diretórios a serem removidos
+      find:
+        paths: /opt/elk/applications/
+        file_type: directory
+        patterns: "^{{ app_name_export }}.*"
+        use_regex: true
+      register: wildcard_directories_to_delete
+ 
+    - name: Removendo os diretórios encontrados
+      file:
+        path: "{{ delete_item.path }}"
+        state: absent
+      with_items: "{{ wildcard_directories_to_delete.files | default([]) }}"
+      loop_control:
+        loop_var: delete_item
+ 
+    - name: Descompactando o binário do {{ app_name_export }}
+      unarchive:
+        src: "/opt/elk/applications/bin/{{ app_name_export }}.tar.gz"
+        dest: /opt/elk/applications/
+        owner: elastic
+        group: web
+        remote_src: yes 
+ 
+    - name: Renomeando o diretório exportado
+      shell: mv $(find . -maxdepth 1 -type d -iname "{{ app_name_export }}*") /opt/elk/applications/{{ app_name_export }}
+      args:
+        chdir: /opt/elk/applications/
