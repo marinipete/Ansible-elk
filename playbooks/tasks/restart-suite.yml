@@ -1,6 +1,6 @@
 ---
     - name: Verificando se o processo do {{ app_name_restart }} está no ar
-      shell: ps aux | grep -v grep | grep './{{ app_name_restart }}' | awk '{print $2}' | wc -l
+      shell: ps aux | grep -v grep | grep '/{{ app_name_restart }}' | awk '{print $2}' | wc -l
       register: process_to_kill
       changed_when: process_to_kill != "0"
 
@@ -11,9 +11,13 @@
             seconds: 5
       when: process_to_kill.stdout != "0"
 
-    - name: Iniciando o processo
+    - name: Iniciando o processo do {{ app_name_restart }}
       become: yes
       become_user: elastic
-      raw: nohup /opt/elk/applications/{{ app_name_restart }}/bin/{{ app_name_restart }} > /dev/null 2>&1 &
-      register: debug
-    - debug: var=debug
+      block:
+        - shell: nohup /opt/elk/applications/{{ app_name_restart }}/bin/{{ app_name_restart }} > /dev/null 2>&1 &
+          environment:
+           JAVA_HOME: /opt/web/java/
+      when: app_name_restart == "logstash"
+    - raw: nohup /opt/elk/applications/{{ app_name_restart }}/bin/{{ app_name_restart }} > /dev/null 2>&1 &
+      when: app_name_restart == "kibana"

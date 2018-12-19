@@ -25,6 +25,8 @@
         loop_var: delete_item
  
     - name: Descompactando o binário do {{ app_name_export }}
+      become: yes
+      become_user: elastic
       unarchive:
         src: "/opt/elk/applications/bin/{{ app_name_export }}.tar.gz"
         dest: /opt/elk/applications/

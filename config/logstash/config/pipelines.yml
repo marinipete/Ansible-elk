@@ -18,7 +18,7 @@
 - pipeline.id: Log-Canais
   path.config: "/opt/elk/applications/logstash/config/pipeline-canais.cfg"
   
-- pipeline.id: Log-Canais
+- pipeline.id: Integracao
   path.config: "/opt/elk/applications/logstash/config/pipeline-packetbeat.cfg"
   
 # Available options:
