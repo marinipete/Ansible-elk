@@ -2,7 +2,7 @@
     - name: Copiando o arquivo de configuração do {{ app_name_update }} para máquina de destino
       copy:
         src: /etc/ansible/stage/replicacaoELK/config/{{ app_name_update }}/config
-        dest: /home/qaadm/{{ app_name_update }}/
+        dest: /home/qaadm/{{ app_name_update | regex_replace('-*', '') }}/
         owner: root
         group: root
         mode: 0644
