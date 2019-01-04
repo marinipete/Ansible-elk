@@ -1,0 +1,8 @@
+---
+- hosts: all
+  remote_user: qaadm
+  become: yes
+  become_user: root
+  gather_facts: no
+  roles:
+    - health_check

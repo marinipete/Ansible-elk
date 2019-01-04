@@ -1,0 +1,13 @@
+---
+- hosts: all
+#  strategy: free 
+  remote_user: qaadm
+#  vars:
+#  ansible_python_interpreter: /usr/src/Python-2.7.15/python
+  tasks:
+   - name: Connection Test
+     become: yes
+     become_user: root
+     action: shell uname -n
+#     register: hostname
+#   - debug: var=hostname.stdout_lines

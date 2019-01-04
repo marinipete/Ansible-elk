@@ -1,0 +1,28 @@
+---
+- name: Validando o diretório destino {{ install_path.shippers }}
+  file:
+    path: "{{ install_path.shippers }}"
+    state: directory
+    owner: qaadm
+    group: qaadm
+    mode: 0700
+    recurse: no
+
+- name: Validando o arquivo {{ app_name_extracao }}.tar.gz no destino
+  copy:
+    src: "{{ cp_item }}"
+    dest: "{{ install_path.shippers }}/{{ app_name_extracao }}.tar.gz"
+    force: yes
+  with_fileglob: bin/{{ app_name_extracao }}*tar.gz
+  #loop: "{{ lookup('fileglob', 'bin/{{ app_name_extracao }}*tar.gz', wantlist=True) }}" #Disponível a partir da versão 2.5 do Ansible
+  register: copied_files
+  loop_control:
+    loop_var: cp_item
+
+- name: Executando a tarefa de export para o binário do {{ app_name_extracao }}
+  include: extraction-shippers.yml
+  when: export_item.changed
+  with_items: "{{ copied_files.results }}"
+  #loop: "{{ copied_files.results | flatten(levels=1) }}" #Disponível a partir da versão 2.5 do Ansible
+  loop_control:
+    loop_var: export_item
