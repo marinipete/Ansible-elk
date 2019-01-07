@@ -1,9 +1,0 @@
----
-- hosts: all
-  remote_user: qaadm
-  become: yes
-  become_user: root
-  gather_facts: no
-  tasks:
-    - name: Testando ping
-      command: ping -c 1 elk1
