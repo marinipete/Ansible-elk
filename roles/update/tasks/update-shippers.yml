@@ -1,0 +1,18 @@
+---
+- name: Copiando o arquivo de configuração do {{ app_name_update | regex_replace('-.*', '') }} para máquina de destino
+  copy:
+    src: config/{{ app_name_update }}/config
+    dest: "{{ install_path.shippers }}/{{ app_name_update | regex_replace('-.*', '') }}/"
+    owner: root
+    group: root
+    mode: 0644
+  register: updated
+
+- name: Excluindo o arquivo de configuração da instalação default do {{ app_name_update | regex_replace('-.*', '') }}
+  file:
+    path: "{{ install_path.shippers }}/{{ app_name_update | regex_replace('-.*', '') }}/{{ app_name_update | regex_replace('-.*', '') }}.yml"
+    state: absent
+
+- name: Reiniciando o processo do {{ app_name_update | regex_replace('-.*', '') }}
+  include: restart-shippers.yml app_name_restart={{ app_name_update | regex_replace('-.*', '') }}
+  when: updated.changed

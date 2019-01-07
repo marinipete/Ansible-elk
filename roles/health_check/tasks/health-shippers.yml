@@ -1,0 +1,11 @@
+---
+- name: Verificando se o processo do {{ app_name_health }} está no ar
+  shell: ps aux | grep -v grep | grep './{{ app_name_health }}' | awk '{print $2}' | wc -l
+  register: is_process_alive
+  changed_when: is_process_alive.stdout == "0"
+
+- name: Iniciando o processo
+  shell: nohup ./{{ app_name_health }} -e -c config/{{ app_name_health }}.yml > /dev/null 2>&1 &
+  args:
+    chdir: "{{ install_path.shippers }}/{{ app_name_health }}/"
+  when: is_process_alive.stdout == "0"

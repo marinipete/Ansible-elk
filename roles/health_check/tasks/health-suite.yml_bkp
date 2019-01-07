@@ -1,0 +1,35 @@
+---
+- name: Verificando se o processo do {{ app_name_health }} está no ar
+  shell: ps aux | grep -v grep | grep '/{{ app_name_health }}' | awk '{print $2}' | wc -l
+  register: is_process_alive
+  changed_when: is_process_alive.stdout == "0"
+
+- name: Iniciando o processo do Logstash
+  become: yes
+  become_user: elastic
+  shell: nohup /opt/elk/applications/{{ app_name_health }}/bin/{{ app_name_health }} > /dev/null 2>&1 &
+  environment:
+    JAVA_HOME: /opt/web/java/
+  args:
+    executable: /bin/bash
+  when: app_name_health == "logstash"
+
+- name: Iniciando o processo do Kibana
+  become: yes
+  become_user: elastic
+  raw: nohup /opt/elk/applications/{{ app_name_health }}/bin/{{ app_name_health }} > /dev/null 2>&1 &
+  when: app_name_health == "kibana"
+
+
+#- name: Iniciando o processo do {{ app_name_health }}
+#  become: yes
+#  become_user: elastic
+#  shell: "nohup {{ install_path.suite }}/{{ app_name_health }}/bin/{{ app_name_health }} > /dev/null 2>&1 &"
+#  shell: "nohup {{ install_path.suite }}/{{ app_name_health }}/bin/{{ app_name_health }} 2>&1 &"
+#  environment:
+#    JAVA_HOME: /opt/web/java/
+#  args:
+#    executable: /bin/bash
+#  when: is_process_alive.stdout == "0"
+
+

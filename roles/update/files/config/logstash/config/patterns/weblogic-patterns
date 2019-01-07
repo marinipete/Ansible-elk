@@ -1,0 +1,8 @@
+WLS_SERVERLOG_DATE %{DATE_EU} %{HOUR}h%{MINUTE}min%{SECOND}s
+
+ACCESSDATE %{YEAR}[./-]%{MONTHNUM}[./-]%{MONTHDAY}
+
+WLS_SERVERLOG_LOJA_DATE %{MONTH} ([1-3]?[0-9]), %{YEAR} %{TIME} ([AaPp][Mm])
+
+#WLS_USER ([<>a-zA-Z0-9\-\.@ ]*)
+

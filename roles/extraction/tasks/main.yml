@@ -1,0 +1,12 @@
+---
+- name: Validando se o binário existe no servidor de destino (Shippers)
+  include: bin_version-shippers.yml app_name_extracao={{ item | regex_replace('-.*', '') }}
+  with_items: "{{ app_name.split('|') }}"
+  #loop: "{{ app_name.split('|') | flatten(levels=1) }}" #Disponível a partir da versão 2.5 do Ansible
+  when: technology == "shipper"
+
+- name: Validando se o binário existe no servidor de destino (ELK)
+  include: bin_version-suite.yml app_name_extracao={{ item }}
+  with_items: "{{ app_name.split('|') }}"
+  #loop: "{{ app_name.split('|') | flatten(levels=1) }}" #Disponível a partir da versão 2.5 do Ansible
+  when: technology == "suite"

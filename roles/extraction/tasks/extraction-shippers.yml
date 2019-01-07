@@ -1,0 +1,37 @@
+---
+- name: Verificando se o processo do {{ app_name_extracao }} está no ar
+  shell: ps aux | grep -v grep | grep './{{ app_name_extracao }}' | awk '{print $2}' | wc -l
+  register: process_to_kill
+  changed_when: process_to_kill.stdout != "0"
+
+- name: Parando o processo do {{ app_name_extracao }}
+  shell: kill $(ps aux | grep -v grep | grep './{{ app_name_extracao }}' | awk '{print $2}')
+  when: process_to_kill.stdout != "0"
+
+- name: Buscando os diretórios a serem removidos
+  find:
+    paths: "{{ install_path.shippers }}"
+    file_type: directory
+    patterns: "^{{ app_name_extracao }}.*"
+    use_regex: true
+  register: wildcard_directories_to_delete
+
+- name: Removendo os diretórios encontrados
+  file:
+    path: "{{ delete_item.path }}"
+    state: absent
+  with_items: "{{ wildcard_directories_to_delete.files | default([]) }}"
+  #loop: "{{ wildcard_directories_to_delete.files | flatten(levels=1) | default([]) }}" #Disponível a partir da versão 2.5 do Ansible
+  loop_control:
+    loop_var: delete_item
+
+- name: Descompactando o binário do {{ app_name_extracao }}
+  unarchive:
+    src: "{{ install_path.shippers }}/{{ app_name_extracao }}.tar.gz"
+    dest: "{{ install_path.shippers }}"
+    remote_src: yes 
+
+- name: Renomeando o diretório exportado
+  shell: mv $(find . -maxdepth 1 -type d -iname "{{ app_name_extracao }}*") {{ app_name_extracao }}
+  args:
+    chdir: "{{ install_path.shippers }}"
