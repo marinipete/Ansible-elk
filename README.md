@@ -10,7 +10,7 @@ Requirements
 - Java 8
 - ELK 6.3.0 (or higher)
 
-Tested on Redhat 5/6/7 environments, should work on similar distributions (CentOs/Fedora/Ubunto). Check https://www.elastic.co/support/matrix for compatibility.
+Tested on Redhat 6/7 environments, should work on similar distributions (CentOs/Fedora/Ubunto). Check https://www.elastic.co/support/matrix for compatibility.
 
 Environment variables
 ------------
