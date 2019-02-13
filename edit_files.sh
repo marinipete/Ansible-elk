@@ -53,7 +53,7 @@ Opt1 () {
     echo -e "\033[0;32m 6. Voltar \033[0m"
     printf "\n"
     echo -en "\033[0;32m R: \033[0m";read edit_file
-
+    
     #BKP and edit files
     if [ "$edit_file" = "1" ]
         then cp -n ${path_config}/${produto}.yml ${path_config}/../bkp/${produto}.yml_`date +%d.%m.%Y-%Hh:%Mmin` && vim ${path_config}/${produto}.yml && Opt1
@@ -63,7 +63,7 @@ Opt1 () {
         then cp -n ${path_config}/jvm.options ${path_config}/../bkp/jvm.options_`date +%d.%m.%Y-%Hh:%Mmin` && vim ${path_config}/jvm.options && Opt1
         elif [ "$edit_file" = "4" ]
         then cp -n ${path_config}/pipeline-canais.cfg ${path_config}/../bkp/pipeline-canais.cfg_`date  +%d.%m.%Y-%Hh:%Mmin` && vim ${path_config}/pipeline-canais.cfg && Opt1
-        elif [ "$edit_file" = "5" ]
+        elif [ "$edit_file" = "5" ] 
         then cp -n ${path_config}/pipeline-packetbeat.cfg ${path_config}/../bkp/pipeline-packetbeat.cfg_`date  +%d.%m.%Y-%Hh:%Mmin` && vim ${path_config}/pipeline-packetbeat.cfg && Opt1
         elif [ "$edit_file" = "6" ]
         then Main_edit
@@ -101,7 +101,7 @@ Opt4 () {
     echo -e "\033[0;32m 6. Voltar \033[0m"
     printf "\n"
     echo -en "\033[0;32m R: \033[0m";read edit_file
-
+    
     #BKP and edit files
     if [ "$edit_file" = "1" ]
         then cp -n ${path_repo}/${produto}-login/config/${produto}.yml ${path_repo}/${produto}-login/bkp/${produto}.yml_`date +%d.%m.%Y-%Hh:%Mmin` && vim ${path_repo}/${produto}-login/config/${produto}.yml && Opt4
